@@ -8,18 +8,15 @@ import json
 import streamlit.components.v1 as components
 
 # .env 파일에서 환경 변수 로드
-load_dotenv()
-
-# 환경 변수에서 TMAP API 키 읽기
-app_key = os.getenv("TMAP_API_KEY")
+# load_dotenv()
 
 # Streamlit 앱 설정
 st.set_page_config(layout="wide")
 
+# 사이드바에서 TMAP API 키 입력받기
+app_key = st.sidebar.text_input("TMAP API Key", value=os.getenv("TMAP_API_KEY"), type="password")
+
 def get_poi_by_keyword(keyword):
-    """
-    poi: points of interest
-    """
     url = f'https://apis.openapi.sk.com/tmap/pois?version=1&appKey={app_key}&searchKeyword={keyword}'
     response = requests.get(url)
     result = response.json()
@@ -49,8 +46,8 @@ def get_total_time(start_poi, end_poi):
 
 # 출발지와 도착지 정보 입력받기
 st.sidebar.header("출발지와 도착지 정보")
-dep_keyword = st.sidebar.text_input("출발지 POI 키워드", "출발지 키워드 입력")
-dest_keyword = st.sidebar.text_input("도착지 POI 키워드", "도착지 키워드 입력")
+dep_keyword = st.sidebar.text_input("출발지 POI 키워드", "")
+dest_keyword = st.sidebar.text_input("도착지 POI 키워드", "")
 
 if st.sidebar.button("경로 안내"):
     # 출발지와 도착지 POI 검색
